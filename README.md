@@ -2,6 +2,8 @@
 VANJAM
 
 V - Snatch
+
 A - Tranquil
+
 N - Fowl
 
