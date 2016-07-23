@@ -10,7 +10,7 @@ public class chickenController : MonoBehaviour {
 
     private float targetX;
     private float startX;
-    private float chickenSpeed = 2f;
+    private float chickenSpeed = 1f;
     private float startTime;
     private float travelDirection;
 
@@ -64,7 +64,7 @@ public class chickenController : MonoBehaviour {
 
     void setTargetX()
     {
-        targetX = Random.Range(0, yardSize);
+        targetX = Random.Range(0, yardSize) - yardSize/2;
         startTime = Time.time;
         startX = transform.localPosition.x;
         travelDirection = 1;
