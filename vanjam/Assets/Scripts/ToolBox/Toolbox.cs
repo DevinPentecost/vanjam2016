@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 public class Toolbox : MonoBehaviour {
+	//DEBUG!
+	public const bool DEBUG = true;
 
 	//Names and stuff
 	public const string TAG_BUSH = "Bush";
