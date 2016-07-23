@@ -67,10 +67,21 @@ public class chickenController : MonoBehaviour {
         targetX = Random.Range(0, yardSize) - yardSize/2;
         startTime = Time.time;
         startX = transform.localPosition.x;
+        float currentDirection = travelDirection;
         travelDirection = 1;
+
+        // if targetX is left of startX velocity is negative
         if (startX > targetX)
         {
             travelDirection = -1;
+        }
+
+        // flip the sprite horizontally on direction change
+        if (currentDirection*travelDirection < 0)
+        {
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
         }
     }
 
