@@ -4,9 +4,10 @@ using System.Collections;
 public class BushController : MonoBehaviour {
 
 	//Notifications
-	public GameObject canHideNotification;
-	public GameObject unHideNotification;
-	private GameObject notificationTarget;
+	public Sprite canHideNotification;
+	public Sprite unHideNotification;
+	public GameObject hideNotification;
+	private PlayerController notificationTarget;
 	private GameObject currentNotification;
 
 	//How high above the player is the notification?
@@ -28,6 +29,18 @@ public class BushController : MonoBehaviour {
 		//Do we even have one?
 		if(this.currentNotification && this.notificationTarget)
 		{
+			//Should it be regular?
+			if (notificationTarget.isHiding)
+			{
+				//We use the up one
+				currentNotification.GetComponent<SpriteRenderer>().sprite = this.unHideNotification;
+			}
+			else
+			{
+				//Point down
+				currentNotification.GetComponent<SpriteRenderer>().sprite = this.canHideNotification;
+			}
+
 			//We need it to follow the player but be up a bit
 			Vector3 targetPosition = this.notificationTarget.transform.localPosition;
 			targetPosition.y = targetPosition.y + this.notificationHeight;
@@ -64,14 +77,17 @@ public class BushController : MonoBehaviour {
 		if (enter)
 		{
 			//We need to let the player know they can hide
-			this.currentNotification = Instantiate(this.canHideNotification);
-			this.notificationTarget = targetObject;
+			this.currentNotification = Instantiate(this.hideNotification);
+			this.notificationTarget = targetObject.GetComponent<PlayerController>();
+
+			//The user can hide?
+			this.notificationTarget.canHide = enter;
 		}
 		else
 		{
 			//The player can no longer hide
 			Destroy(this.currentNotification);
 			this.notificationTarget = null;
-		}
+		}	
 	}
 }
