@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour {
 	public HouseController inspectionTarget;
 	public bool canInspect = false;
 	public bool isInspecting = false;
+	public bool canRob = false;
+	public bool isRobbing = false;
 	private float inspectionWalkTime = 1.0f;
 	private float inspectionWaitTime = 5.0f;
 	private int inspectionStage = -1; //Walking towards, looking in the window, or walking back
