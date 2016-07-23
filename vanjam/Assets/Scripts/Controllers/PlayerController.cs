@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	//A variety of prefabs
+	public GameController gameController;
 
 	//The velocity when walking
 	public float walkingSpeed = 0.5f;
@@ -123,6 +124,10 @@ public class PlayerController : MonoBehaviour {
 		//Now we start inspecting
 		this.isInspecting = true;
 		this.inspectionStage = 0;
+
+		//Update our meter
+		gameController.InspectedHouse();
+		
 	}
 
 	//Update inspection

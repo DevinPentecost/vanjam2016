@@ -97,6 +97,7 @@ public class HouseController : MonoBehaviour {
 		else
 		{
 			//The player can no longer look
+			this.notificationTarget.canInspect = enter;
 			Destroy(this.currentNotification);
 			this.notificationTarget = null;
 		}
