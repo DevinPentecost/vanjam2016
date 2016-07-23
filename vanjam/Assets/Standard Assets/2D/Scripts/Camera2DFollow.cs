@@ -10,7 +10,12 @@ namespace UnityStandardAssets._2D
         public float lookAheadFactor = 3;
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
-        public float levelClamp = 15f;
+
+        public GameObject leftGate;
+        public GameObject rightGate;
+        private float leftBound;
+        private float rightBound;
+
         public Vector3 newPos;
 
         private float m_OffsetZ;
@@ -24,6 +29,8 @@ namespace UnityStandardAssets._2D
             m_LastTargetPosition = target.position;
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
+            leftBound = leftGate.transform.position.x;
+            rightBound = rightGate.transform.position.x;
         }
 
 
@@ -47,13 +54,13 @@ namespace UnityStandardAssets._2D
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
             
-            if (target.position.x > levelClamp)
+            if (target.position.x > rightBound)
             {
-                newPos.x = levelClamp;
+                newPos.x = rightBound;
             }
-            if (target.position.x < -levelClamp)
+            if (target.position.x < leftBound)
             {
-                newPos.x = -levelClamp;
+                newPos.x = leftBound;
             }
 
             transform.position = newPos;
