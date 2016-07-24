@@ -6,9 +6,12 @@ public class ChickenCopController : MonoBehaviour {
 	//The waypoints it walks between
 	public GameObject waypointOne;
 	public GameObject waypointTwo;
+    public GameObject player;
+    public GameObject hud;
+    public GameController gameCont;
 
-	//How fast does it walk?
-	private float speed = 0.5f;
+    //How fast does it walk?
+    private float speed = 0.5f;
 
 	//How long does it wait?
 	private float waitTime = 3f;
@@ -102,4 +105,18 @@ public class ChickenCopController : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+    //Handle colliding with a cop
+    void HandleTouchingPlayer(GameObject targetObject)
+    {
+        // is it night
+        if (gameCont.isNight) {
+            //Are we not hidden?
+            if (!player.GetComponent<PlayerController>().isHiding)
+            {
+                // lose all eggs if not hidden
+                hud.GetComponentInChildren<ScoreController>().score = 0;
+            }
+        }
+    }
 }
