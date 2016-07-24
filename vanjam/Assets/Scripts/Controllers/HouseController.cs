@@ -3,6 +3,10 @@ using System.Collections;
 
 public class HouseController : MonoBehaviour {
 
+	//Prefabs
+	public GameObject chickenPrefab;
+	public GameObject roosterPrefab;
+
 	//The house's sprites
 	public Sprite daySprite;
 	public Sprite nightSprite;
@@ -34,12 +38,19 @@ public class HouseController : MonoBehaviour {
 	public bool canInspect = true;
 	public bool canRob = false;
 
+	//For making roosters and hens
+	private int secondHenEggCount = 15;
+	private float roosterMaxSuspicion = 50;
+
 	// Use this for initialization
 	void Start () {
 
 		//Get the window and door positions
 		this.windowPoint = transform.FindChild("Window").transform.localPosition;
 		this.doorPoint = transform.FindChild("Door").transform.localPosition;
+
+		//Lets figure out them chicks
+		this.GenerateChickens();
 
 	}
 	
@@ -176,5 +187,50 @@ public class HouseController : MonoBehaviour {
 
 		//Let the player know how many eggs they got
 		return eggsStolen;
+	}
+
+
+	//Make chickneys
+	private void GenerateChickens()
+	{
+		//Calculate the number of hens
+		int henCount = 1;
+
+		//Are there at least enough eggs for another hen?
+		if(this.eggs >= this.secondHenEggCount)
+		{
+			//More hen
+			++henCount;
+		}
+
+		//What about them roosts?
+		int roosterCount = 0;
+		if(this.maxSuspicion <= this.roosterMaxSuspicion)
+		{
+			//More roosterboys
+			++roosterCount;
+		}
+
+		//For each chicken
+		for(int i = 0; i < henCount; ++i)
+		{
+			//Add one
+			GameObject chicken = Instantiate(this.chickenPrefab);
+
+			//Set it's parent
+			chicken.transform.parent = this.transform;
+			chicken.transform.localPosition = Vector3.zero;
+		}
+
+		//For each rooster
+		for (int i = 0; i < roosterCount; ++i)
+		{
+			//Add one
+			GameObject rooster = Instantiate(this.roosterPrefab);
+
+			//Set it's parent
+			rooster.transform.parent = this.transform;
+			rooster.transform.localPosition = Vector3.zero;
+		}
 	}
 }

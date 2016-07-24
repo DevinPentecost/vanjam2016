@@ -7,7 +7,7 @@ public class EggCountNotificationController : MonoBehaviour {
 	public int eggCount = 0;
 
 	//How long till I DIE!?!?
-	private float notificationLife = 3f;
+	private float notificationLife = 5f;
 
 	// Use this for initialization
 	void Start () {

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 
 	//Where should notifications be?
 	private float notificationY = 1;
+	private float notificationZ = -1;
 
 	//The velocity when walking
 	public float walkingSpeed = 0.5f;
@@ -175,6 +176,11 @@ public class PlayerController : MonoBehaviour {
 				//Move on
 				this.inspectionStage = 1;
 				this.inspectionStartTime = Time.time;
+
+				//Show them eggs
+				//Display the number of eggs to the player
+				int eggs = this.inspectionTarget.eggs;
+				this.DisplayEggNotification(eggs);
 			}
 			else
 			{
@@ -205,23 +211,6 @@ public class PlayerController : MonoBehaviour {
 					//Let the game controller know we took some eggs
 					this.gameController.EggsCollected(eggs);
 				}
-				else
-				{
-					//Display the number of eggs to the player
-					int eggs = this.inspectionTarget.eggs;
-
-					//We want to make the notification
-					GameObject notification = Instantiate(this.eggCountNotificationPrefab);
-					notification.GetComponent<EggCountNotificationController>().eggCount = eggs;
-
-					//It should follow the player while it is still alive
-					notification.transform.parent = this.transform;
-
-					//Place it above the player
-					Vector3 notificationPosition = new Vector3(0, this.notificationY, 0);
-					notification.transform.localPosition = notificationPosition;
-
-				}
 			}
         }
 
@@ -248,5 +237,20 @@ public class PlayerController : MonoBehaviour {
 
 		//Now lets set the target position
 		this.transform.localPosition = finalPosition;
+	}
+
+	//Display the egg notification
+	private void DisplayEggNotification(int eggs)
+	{
+		//We want to make the notification
+		GameObject notification = Instantiate(this.eggCountNotificationPrefab);
+		notification.GetComponent<EggCountNotificationController>().eggCount = eggs;
+
+		//It should follow the player while it is still alive
+		notification.transform.parent = this.transform;
+
+		//Place it above the player
+		Vector3 notificationPosition = new Vector3(0, this.notificationY, this.notificationZ);
+		notification.transform.localPosition = notificationPosition;
 	}
 }
