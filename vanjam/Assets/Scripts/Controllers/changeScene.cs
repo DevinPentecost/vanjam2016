@@ -11,7 +11,7 @@ public class changeScene : MonoBehaviour {
 	void Start () {
         float horzExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
         BoxCollider2D boxCollider = GetComponent("BoxCollider2D") as BoxCollider2D;
-        Vector2 bound = new Vector2 (horzExtent * boundSide,0);
+        Vector2 bound = new Vector2 (horzExtent * boundSide/2,0);
         boxCollider.offset = bound;  
     }
 	
