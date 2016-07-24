@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement; // neded in order to load scenes
 
 public class GameController : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class GameController : MonoBehaviour {
 	public SuspicionController suspicion;
 	public ScoreController score;
 	public TimeController time;
+    public GameObject gameOverPrefab;
 
 	//Other stuff to track
 	public SunMoonControlller sunMoon;
@@ -24,7 +26,6 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
 	//The player looked into a house, up the suspicion
@@ -79,15 +80,38 @@ public class GameController : MonoBehaviour {
 			//Don't count time and go to the next level
 			this.time.CountTime(begin);
 
-			//Fade to black, next level, etc
-		}
+            //display game over score and go to start menu
+            GameOverScreen();
+        }
 
 		//Toggle the moon and sun
 		this.sunMoon.ToggleSprite();
 	}
 
-	//Handle houses for night
-	void HandleHouseNight()
+    void GameOverScreen()
+    {
+        // instantiate the game over screen
+        GameObject scoreDisplay = Instantiate(this.gameOverPrefab);
+        scoreDisplay.GetComponent<GameOverScoreController>().eggCount = this.score.score;
+
+        //It should follow the player
+        scoreDisplay.transform.localPosition = player.transform.localPosition;
+        scoreDisplay.transform.parent = player.transform;
+
+        ExecuteAfterTime();
+
+    }
+
+    // go to start menu after time
+    IEnumerator ExecuteAfterTime()
+    {
+        yield return new WaitForSeconds(4.0f);
+        // go to start menu again
+        SceneManager.LoadScene(0);
+    }
+
+//Handle houses for night
+void HandleHouseNight()
 	{
 		//What is the current suspicion?
 		float suspicion = this.suspicion.currentSuspicion;

@@ -6,8 +6,6 @@ public class ChickenCopController : MonoBehaviour {
 	//The waypoints it walks between
 	public GameObject waypointOne;
 	public GameObject waypointTwo;
-    public GameObject player;
-    public GameObject hud;
     public GameController gameCont;
 
     //How fast does it walk?
@@ -106,16 +104,26 @@ public class ChickenCopController : MonoBehaviour {
 		}
 	}
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        //What did we collide with?
+        if (collision.gameObject.tag == Toolbox.TAG_PLAYER)
+        {
+            //Handle that
+            this.HandleTouchingPlayer(collision.gameObject);
+        }
+    }
+
     //Handle colliding with a cop
     void HandleTouchingPlayer(GameObject targetObject)
     {
         // is it night
         if (gameCont.isNight) {
             //Are we not hidden?
-            if (!player.GetComponent<PlayerController>().isHiding)
+            if (!targetObject.GetComponent<PlayerController>().isHiding)
             {
                 // lose all eggs if not hidden
-                hud.GetComponentInChildren<ScoreController>().score = 0;
+                gameCont.score.score = 0;
             }
         }
     }

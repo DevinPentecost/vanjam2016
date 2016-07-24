@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: b68dd694131cd1946b5ccc0cafb7e70a
-timeCreated: 1469260022
+timeCreated: 1469397068
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - suspicion: {instanceID: 0}
+  - score: {instanceID: 0}
+  - time: {instanceID: 0}
+  - gameOverPrefab: {fileID: 189316, guid: 0a09015db559a4049a28d2ce3f856aa4, type: 2}
+  - sunMoon: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
