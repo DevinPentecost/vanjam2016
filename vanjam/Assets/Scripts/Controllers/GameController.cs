@@ -62,27 +62,17 @@ public class GameController : MonoBehaviour {
 			//Stop counting suspicion
 			this.suspicion.countSuspicion = false;
 
-			//What is the current suspicion?
-			float suspicion = this.suspicion.currentSuspicion;
-
 			//Don't count time and go to the next level
 			this.time.CountTime(begin);
 
-			//Find all houses
-			GameObject[] houses = GameObject.FindGameObjectsWithTag(Toolbox.TAG_HOUSE);
+			//Handle houses for night
+			this.HandleHouseNight();
 
-			//Go through each house
-			foreach (GameObject house in houses)
-			{
-				//Get the controller
-				HouseController houseController = house.GetComponent<HouseController>();
+			//Handle chickens for night
+			this.HandleChickenNight();
 
-				//Tell it it is night time...
-				houseController.HandleNight();
-
-				//Also how suspicious were we?
-				houseController.HandleSuspicion(suspicion);
-			}
+			//Handle cops
+			this.HandleCopNight();
 		}
 		else
 		{
@@ -94,5 +84,71 @@ public class GameController : MonoBehaviour {
 
 		//Toggle the moon and sun
 		this.sunMoon.ToggleSprite();
+	}
+
+	//Handle houses for night
+	void HandleHouseNight()
+	{
+		//What is the current suspicion?
+		float suspicion = this.suspicion.currentSuspicion;
+
+		//Find all houses
+		GameObject[] houses = GameObject.FindGameObjectsWithTag(Toolbox.TAG_HOUSE);
+
+		//Go through each house
+		foreach (GameObject house in houses)
+		{
+			//Get the controller
+			HouseController houseController = house.GetComponent<HouseController>();
+
+			//Tell it it is night time...
+			houseController.HandleNight();
+
+			//Also how suspicious were we?
+			houseController.HandleSuspicion(suspicion);
+		}
+	}
+
+	//Handle chickens for night
+	void HandleChickenNight()
+	{
+		//What is the current suspicion?
+		float suspicion = this.suspicion.currentSuspicion;
+
+		//Find all houses
+		GameObject[] chickens = GameObject.FindGameObjectsWithTag(Toolbox.TAG_CHICKEN);
+
+		//Go through each house
+		foreach (GameObject chicken in chickens)
+		{
+			//Get the controller
+			chickenController chickenController = chicken.GetComponent<chickenController>();
+
+			//Tell it it is night time...
+			chickenController.HandleNight();
+		}
+	}
+
+	//Handle cops for night
+	void HandleCopNight()
+	{
+		//What is the current suspicion?
+		float suspicion = this.suspicion.currentSuspicion;
+
+		//Find all houses
+		GameObject[] cops = GameObject.FindGameObjectsWithTag(Toolbox.TAG_COP);
+
+		//Go through each house
+		foreach (GameObject cop in cops)
+		{
+			//Get the controller
+			ChickenCopController copController = cop.GetComponent<ChickenCopController>();
+
+			//Tell it it is night time...
+			copController.HandleNight();
+
+			//Also how suspicious were we?
+			copController.HandleSuspicion(suspicion);
+		}
 	}
 }

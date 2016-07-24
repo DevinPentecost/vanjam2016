@@ -23,6 +23,12 @@ public class ChickenCopController : MonoBehaviour {
 	private float patrolLength;
 	private float startTime;
 
+	//Can we capture the player
+	private bool canCapture = false;
+
+	//What is the minimum suspicion for it to come out at night
+	public float minimumSuspicion = 0;
+
 	// Use this for initialization
 	void Start () {
 		//Walk towards the first waypoint
@@ -76,6 +82,24 @@ public class ChickenCopController : MonoBehaviour {
 				this.patrolLength = Vector3.Distance(this.transform.localPosition, this.nextWaypoint.transform.localPosition);
 				this.walking = true;
 			}
+		}
+	}
+
+	//It's switching to night time
+	public void HandleNight()
+	{
+		//We can now capture the player
+		this.canCapture = true;
+	}
+
+	//Are we suspicious enough
+	public void HandleSuspicion(float suspicion)
+	{
+		//Is it not high enough?
+		if(suspicion < this.minimumSuspicion)
+		{
+			//Go away
+			Destroy(this.gameObject);
 		}
 	}
 }

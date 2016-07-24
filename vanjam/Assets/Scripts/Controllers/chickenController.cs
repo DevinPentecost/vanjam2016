@@ -90,4 +90,11 @@ public class chickenController : MonoBehaviour {
     {
 
     }
+
+	//Go away for night
+	public void HandleNight()
+	{
+		//Just DIE
+		Destroy(this.gameObject);
+	}
 }
