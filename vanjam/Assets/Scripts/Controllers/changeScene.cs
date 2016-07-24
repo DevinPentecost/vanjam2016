@@ -26,8 +26,8 @@ public class changeScene : MonoBehaviour {
         // If we player collides with bound
         if (collision.gameObject.tag == Toolbox.TAG_PLAYER)
         {
-            // Flip isNight value
-            controller.isNight=(!controller.isNight);
+			//Switch to the next state (day->night)
+			controller.NightTime(!controller.isNight);
 
             // Move player back to the center of the level
             Vector3 newPos = player.transform.localPosition;

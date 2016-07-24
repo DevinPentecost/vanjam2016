@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 	void Update()
 	{
 		//Are we busy?
-		bool busy = this.isHiding || this.isInspecting;
+		bool busy = this.isHiding || this.isInspecting || this.isRobbing;
 
 		//Did the fire button get pushed
 		if (Input.GetKeyDown(Toolbox.KEY_ACTION))
@@ -54,10 +54,10 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			//What about inspecting or robbing?
-			if (this.canInspect && !this.isInspecting)
+			if ((this.canInspect && !this.isInspecting) || (this.canRob && !this.isRobbing))
 			{
 				//We handle that
-				this.HandleInspection();
+				this.HandleInspection(this.canRob);
 			}
 		}
 
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//If we are inspecting we need to behave accordingly
-		if (this.isInspecting)
+		if (this.isInspecting || this.isRobbing)
 		{
 			//Update it
 			this.UpdateInspection();
@@ -117,18 +117,27 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//Inspecting
-	void HandleInspection()
+	void HandleInspection(bool robbing = false)
 	{
 		//Get the player's current position and the time
 		this.inspectionStartPosition = this.transform.localPosition;
 		this.inspectionStartTime = Time.time;
 
 		//Now we start inspecting
-		this.isInspecting = true;
 		this.inspectionStage = 0;
 
-		//Update our meter
-		gameController.InspectedHouse();
+		//Are we robbing?
+		if (!robbing)
+		{
+			//Update our meter
+			this.isInspecting = true;
+			gameController.InspectedHouse();
+		}
+		else
+		{
+			//We're robbing instead
+			this.isRobbing = true;
+		}
 		
 	}
 
@@ -136,10 +145,18 @@ public class PlayerController : MonoBehaviour {
 	void UpdateInspection()
 	{
 		//Get a target position
-		Vector3 targetPosition = this.transform.localPosition;
+		Vector3 finalPosition = this.transform.localPosition;
 
 		//What is the windows position in world coordinates?
-		Vector3 windowPosition = this.inspectionTarget.transform.localPosition + this.inspectionTarget.windowPoint;
+		Vector3 targetPoint;
+		if (this.isInspecting)
+		{
+			targetPoint = this.inspectionTarget.windowPoint;
+		}else
+		{
+			targetPoint = this.inspectionTarget.doorPoint;
+		}
+		Vector3 targetPosition = this.inspectionTarget.transform.localPosition + targetPoint;
 
 		//What stage are we at?
 		if(this.inspectionStage == 0)
@@ -158,7 +175,7 @@ public class PlayerController : MonoBehaviour {
 			else
 			{
 				//Keep moving towards the window
-				targetPosition = Vector3.Lerp(this.inspectionStartPosition, windowPosition, time);
+				finalPosition = Vector3.Lerp(this.inspectionStartPosition, targetPosition, time);
 			}			
 		}
 
@@ -174,6 +191,16 @@ public class PlayerController : MonoBehaviour {
 				//We did it
 				this.inspectionStage = 2;
 				this.inspectionStartTime = Time.time;
+
+				//Are we robbing?
+				if (this.isRobbing)
+				{
+					//We should take eggs from the house
+					int eggs = this.inspectionTarget.RobHouse();
+
+					//Let the game controller know we took some eggs
+					this.gameController.EggsCollected(eggs);
+				}
 			}
         }
 
@@ -189,15 +216,16 @@ public class PlayerController : MonoBehaviour {
 				//Wait for another inspection
 				this.inspectionStage = -1;
 				this.isInspecting = false;
+				this.isRobbing = false;
 			}
 			else
 			{
 				//Keep moving towards the gate
-				targetPosition = Vector3.Lerp(windowPosition, this.inspectionStartPosition, time);
+				finalPosition = Vector3.Lerp(targetPosition, this.inspectionStartPosition, time);
 			}
 		}
 
 		//Now lets set the target position
-		this.transform.localPosition = targetPosition;
+		this.transform.localPosition = finalPosition;
 	}
 }

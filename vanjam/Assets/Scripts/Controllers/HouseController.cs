@@ -161,4 +161,20 @@ public class HouseController : MonoBehaviour {
 			this.canRob = true;
 		}
 	}
+
+	//This house is robbed
+	public int RobHouse()
+	{
+		//We rob the house
+		int eggsStolen = this.eggs;
+
+		//No more eggs left
+		this.eggs = 0;
+
+		//We can no longer rob this house again?
+		//this.canRob = false;
+
+		//Let the player know how many eggs they got
+		return eggsStolen;
+	}
 }
